@@ -34,58 +34,46 @@ Fungsi: untuk mereload plugin
 
 Owner Command List:
 1. "/buildingcore buy <building_id>"
-Fungsi: untuk membeli bangunan
-2. /buildingcore sell governor <building_id>
+Fungsi: untuk membeli bangunan yang tersedia
+2. "/buildingcore sell governor <building_id>"
 Fungsi: untuk menjual bangunan ke pemerintah, pemain langsung menerima uang (50% dari harga asli bangunan) dan kehilangan aksesnya.
-3. /buildingcore sell auction <building_id> <value>
-Fungsi: untuk menjual bangunan ke pemain lain, <value> adalah harga 
-4. /buildongcore tax pay
-5. /buildingcore tax check
-6. /buildingcore claim donation
-7. /buildingcore teleport
+3. "/buildingcore sell auction <building_id> <value>"
+Fungsi: untuk menjual bangunan ke pemain lain, <value> adalah harga jual yang ditentukan pemain.
+4. "/buildongcore tax pay <building_id>"
+Fungsi: fungsi untuk membayar pajak lebih awal (manual).
+5. "/buildingcore tax check <building_id>"
+Fungsi: memberikan pesan teks ke pemain yang berisikan informasi kapan waktu pembayaran pajak selanjutnya.
+6. "/buildingcore donation claim <building_id>"
+Fungsi: mengambil semua uang donasi yang terkumpul.
+7. "/buildingcore donation check <building_id>"
+Fungsi: memerika uang donasi yang terkumpul, dan informasi log (mencakup waktu, donatur, dan jumlah donasi).
+8. "/buildingcore tp <building_id>"
+Fungsi: melakukan teleportasi 
 
 Owner Command List (bangunan tipe apartemen):
-1. /buildingcore claim rent <building_id>
+1. "/buildingcore claim rent <building_id>"
 
 Visitor Command:
-4. /buildingcore information
-5. /buildingcore donate
-6. /buildingcore review <value>
+1. "/buildingcore information <building_id>"
+2. "/buildingcore donate <building_id>"
+3. "/buildingcore review <value>"
 
 Other Command:
-1. /buildingcore help
-2. /buildingcore version
+1. "/buildingcore help"
+2. "/buildingcore version"
 
-   
 Logika Umum:
-1. Sistem pajak bangunan akan secara otomatis memotong dana dari pemilik bangunan setiap beberapa waktu (yang telah didaftarkan oleh admin). Jika pemilik tidak memiliki dana yang cukup, bangunan akan memasuki masa penahanan. Selama fase ini, bangunan tidak akan lagi berfungsi dengan baik, dan pemilik asli akan dikenakan denda keterlambatan pembayaran sebesar 25% per hari. Jika pemilik gagal membayar denda dan pajak dalam 3 hari, akses akan dicabut paksa, dan pemain akan ditambahkan ke daftar hitam, mencegah mereka membeli bangunan selama beberapa hari.
+1. Sistem pajak bangunan akan secara otomatis memotong dana dari pemilik bangunan setiap beberapa waktu (yang telah didaftarkan oleh admin). Jika pemilik tidak memiliki dana yang cukup, bangunan akan memasuki <inactive_period>. Selama fase ini, bangunan tidak akan lagi berfungsi dengan baik, dan pemilik asli akan dikenakan denda keterlambatan pembayaran sebesar 25% per hari. Jika pemilik gagal membayar denda dan pajak dalam 3 hari, akses akan dicabut paksa, dan pemain akan ditambahkan ke daftar hitam, mencegah mereka membeli bangunan selama beberapa hari.
+2. Selama masa pelelangan, bangunan akan memasuki <inactive_period> hingga masa lelang berakhir atau bangunan dibeli oleh pemain lain.
+3. Terdapat sistem peringatan langsung untuk setiap kejadian seperti pajak, lelang, transaksi di tempat karyawan, dll.
+4. Setiap transaksi yang melibatkan fitur ini akan dicatat dalam log (sistem ini juga mencatat nama setiap pemilik, tanggal penjualan, dan informasi detail lainnya), yang dapat diakses dan dibaca oleh admin.
 
+Istilah:
+1. <inactive_period>: bangunan yang berada dalam masa ini dinonaktifkan semua fungsinya secara keseluruhan, semua command terkait pemilik akan trigger pesan "bangunan sedang tidak dapat digunakan"
 
-
-
-
-
-Berikut detailnya:
-1. Admin akan mendaftarkan area wilayah sebagai aset pemerintah, menentukan ID, harga sewa, nama tampilan, dan harga pajak, yang semuanya dilakukan menggunakan perintah.
-
-2. Sistem pajak bangunan akan secara otomatis memotong dana dari pemilik bangunan setiap 24 jam. Jika pemilik tidak memiliki dana yang cukup, bangunan akan memasuki masa penahanan. Selama fase ini, bangunan tidak akan lagi berfungsi dengan baik, dan pemilik asli akan dikenakan denda keterlambatan pembayaran sebesar 25% per hari. Jika pemilik gagal membayar denda dan pajak dalam 3 hari, akses akan dicabut paksa, dan pemain akan ditambahkan ke daftar hitam, mencegah mereka membeli bangunan selama beberapa hari.
-
-3. Pemilik bangunan dapat menjual bangunan mereka kepada pemerintah, melelangnya, atau menyewakannya kepada pemain lain.
-a. Jika pemain menjual kepada pemerintah, akses pemain akan dicabut sepenuhnya, dan bangunan akan kembali ke harga normal. Harga jual adalah 50% dari harga asli.
-b. Sistem lelang melibatkan pengalihan kepemilikan, tetapi pemain dapat dengan bebas menentukan harganya. Setelah proses ini selesai, pembeli akan menjadi pemilik penuh bangunan tersebut.
-c. Selama fase penyewaan, pemilik asli tetap membayar pajak kepada pemerintah, tetapi pemilik asli akan menerima biaya sewa (yang ditentukan oleh pemilik) setiap 24 jam dari penyewa.
-
-4. Sistem jual-beli tidak menggunakan toko peti (karena terlalu primitif). Setiap bangunan akan memiliki satu karyawan NPC yang menjual barang-barang milik atau disediakan oleh pemilik asli. Prosedur penjualan akan sepenuhnya menggunakan GUI khusus (mulai dari pendaftaran barang, penentuan harga, dll.) untuk menyederhanakan proses bagi pemain.
-
-5. Terdapat sistem peringatan langsung untuk setiap kejadian seperti pajak, lelang, transaksi di tempat karyawan, dll.
-
-6. Terdapat sistem anti-grief yang mencegah pemilik mengubah atau memodifikasi bangunan sepenuhnya; pemilik hanya dapat mendekorasi area tertentu.
-
-7. Fitur fast-travel memungkinkan pemilik untuk langsung berteleportasi ke lokasi bangunan toko mereka.
-
-8. Sistem peringkat dan ulasan di mana semua pemain dapat memberikan poin ke lokasi bangunan tempat mereka berada saat ini. Peringkat dan ulasan membantu pemain menemukan toko yang bagus.
-
-Informasi tambahan:
-1. Setiap transaksi yang melibatkan fitur ini akan dicatat dalam log (sistem ini juga mencatat nama setiap pemilik, tanggal penjualan, dan informasi detail lainnya), yang dapat diakses dan dibaca oleh admin.
-2. Fitur rumah lelang yang ada di server akan dihapus karena bentrok (berpotensi mengurangi penggunaan salah satu fitur) dengan fitur ini.
-3. Administrator memiliki akses penuh ke fitur ini, artinya mereka dapat menghapus pemilik secara paksa dan melakukan modifikasi penuh tanpa izin.
+Perintah AI:
+1. pastikan plugin komtabible dengan versi 1.21.1, 1.21.2, 1.21.4, 1.21.5
+2. optimasi plugin untuk mencegah lag saat dijalankan.
+3. tambahkan sistem permission disetiap command untuk mencegah eksploitasi.
+4. tambahkan sistem log, debugging, dan pesan error untuk mencatat informasi dan mempermudah proses pengembangan plugin.
+5. 
