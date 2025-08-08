@@ -10,14 +10,55 @@ Jenis Bangunan <building_type>:
 1. Toko
 2. Apartemen
 
-Command list:
-1. /buildingcore admin create type <building_type> <building_id> <building_price_value> <building_tax_value> #untuk mendaftarkan region saat command dijalankan.
-2. /buildingcore admin set tax <building_id> <value> #untuk mengganti harga pajak secara manual.
-3. /buildingcore admin set owner <building_id> <player_name> #untuk mengeset pemilik bangunan secara manual.
-4. /buildingcore admin set price <building_id> <value> #untuk mengganti harga jual bangunan secara manual.
+Admin Command list:
+1. "/buildingcore admin create type <building_type> <building_id> <building_price_value> <building_tax_value> <building_tax_time>"
+Fungsi: untuk mendaftarkan region (worldguard) menjadi bangunan.
+2. "/buildingcore admin set owner <building_id> <value>"
+Fungsi: value adalah <player_name>, untuk mengganti pemilik bangunan.
+3. "/buildingcore admin set price <building_id> <value>"
+Fungsi: value adalah <building_price_value>, untuk mengganti harga jual bangunan.
+4. "/buildingcore admin set tax <building_id> <value>"
+Fungsi: value adalah <building_tax_value>, untuk mengganti harga pajak.
+5. "/buildingcore admin set tax_time <building_id> <value>"
+Fungsi: value adalah <building_tax_time>, untuk mengganti waktu pembayaran pajak.
+6. "/buildingcore admin set type <building_id> <value> #value adalah <building_type>"
+Fungsi: untuk merubah tipe bangunan.
+7. "/buildingcore admin remove <building_id>"
+Fungsi: untuk menghapus bangunan
+8. "/buildingcore admin teleport <building_id>"
+Fungsi: untuk teleportasi ke lokasi bangunan
+9. "/buildingcore admin building_list"
+Fungsi: untuk melihat semua bangunan yang terdaftarkan, command ini memperlihatkan teks yang berisi informasi informasi dasar bangunan.
+10. "/buildingcore admin reload"
+Fungsi: untuk mereload plugin
 
-Logika Bangunan Tipe Toko:
-1. 
+Owner Command List:
+1. "/buildingcore buy <building_id>"
+Fungsi: untuk membeli bangunan
+2. /buildingcore sell governor <building_id>
+Fungsi: untuk menjual bangunan ke pemerintah, pemain langsung menerima uang (50% dari harga asli bangunan) dan kehilangan aksesnya.
+3. /buildingcore sell auction <building_id> <value>
+Fungsi: untuk menjual bangunan ke pemain lain, <value> adalah harga 
+4. /buildongcore tax pay
+5. /buildingcore tax check
+6. /buildingcore claim donation
+7. /buildingcore teleport
+
+Owner Command List (bangunan tipe apartemen):
+1. /buildingcore claim rent <building_id>
+
+Visitor Command:
+4. /buildingcore information
+5. /buildingcore donate
+6. /buildingcore review <value>
+
+Other Command:
+1. /buildingcore help
+2. /buildingcore version
+
+   
+Logika Umum:
+1. Sistem pajak bangunan akan secara otomatis memotong dana dari pemilik bangunan setiap beberapa waktu (yang telah didaftarkan oleh admin). Jika pemilik tidak memiliki dana yang cukup, bangunan akan memasuki masa penahanan. Selama fase ini, bangunan tidak akan lagi berfungsi dengan baik, dan pemilik asli akan dikenakan denda keterlambatan pembayaran sebesar 25% per hari. Jika pemilik gagal membayar denda dan pajak dalam 3 hari, akses akan dicabut paksa, dan pemain akan ditambahkan ke daftar hitam, mencegah mereka membeli bangunan selama beberapa hari.
 
 
 
